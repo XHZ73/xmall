@@ -3,5 +3,19 @@
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation="http://www.springframework.org/schema/beans
 							http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
-	<bean id="userService" class="com.augustars.xmall.service.Zhanghao"/>
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="shiroDBRealm"/>
+	</bean>
+	<bean id="shiroDBRealm" class="com.augustars.xmall.util.ShiroDBRealm"/>
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager"/>
+		<property name="loginUrl" value="/user/login"/>
+		<property name="successUrl" value="/index"/>
+		<property name="filterChainDefinitions">
+			<value>
+				/** = authc
+			</value>
+		</property>
+	</bean>
+	<bean id="lifecycleBean" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 </beans>
